@@ -13,6 +13,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { PhotoUploader } from "../components/uploader";
 
 export const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ export const SignUpPage = () => {
     login: "",
     password: "",
     birthday: "",
+    avatar: "",
   });
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
@@ -45,7 +47,9 @@ export const SignUpPage = () => {
     if (submitDisabled) return;
     alert(JSON.stringify(formData));
 
-    window.location.reload();
+    console.log("🚀 ~ onSubmit ~ formData:", formData);
+
+    // window.location.reload();
   };
 
   return (
@@ -61,6 +65,11 @@ export const SignUpPage = () => {
         justifyContent="center"
         alignItems="center"
       >
+        <Grid item xs={12}>
+
+            <PhotoUploader setFormData={setFormData} formData={formData} />
+
+        </Grid>
         <Grid item xs={4}>
           <Stack>
             <TextField
@@ -167,7 +176,4 @@ export const SignUpPage = () => {
     </Container>
   );
 };
-
-
-
 

@@ -1,11 +1,7 @@
 import { CardMedia } from "@mui/material";
 import { Buffer } from "buffer";
 import { FC, useState } from "react";
-
-type TPhotoUploader = {
-  formData: any;
-  setFormData: (data: any) => void;
-};
+import { TPhotoUploader } from "../payloads/types";
 
 export const PhotoUploader: FC<TPhotoUploader> = ({
   formData,

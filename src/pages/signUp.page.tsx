@@ -6,6 +6,7 @@ import {
   MenuItem,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -14,9 +15,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { PhotoUploader } from "../components/uploader";
+import { useSignUp } from "../hooks/useSignUp";
+import { TSignUpFormData, TTarget } from "../payloads/types";
 
 export const SignUpPage = () => {
-  const [formData, setFormData] = useState({
+  const { sendRequest, resposeData, isLoading, error } = useSignUp();
+  const [formData, setFormData] = useState<TSignUpFormData>({
     firstName: "",
     lastName: "",
     middleName: "",
@@ -24,6 +28,7 @@ export const SignUpPage = () => {
     password: "",
     birthday: "",
     avatar: "",
+    email: "",
   });
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
@@ -34,24 +39,21 @@ export const SignUpPage = () => {
     setSubmitDisabled(isSomeFieldEmpty);
   }, [formData]);
 
-  const onChange = ({
-    target: { name, value },
-  }: {
-    target: { name: string; value: string };
-  }) => {
+  const onChange = ({ target: { name, value } }: TTarget) => {
     setFormData({ ...formData, [name]: value });
   };
 
   const onSubmit = async (e: any) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (submitDisabled) return;
-    alert(JSON.stringify(formData));
+    sendRequest(formData);
+    alert(process.env.REACT_APP_BACKEND_URL);
 
     console.log("🚀 ~ onSubmit ~ formData:", formData);
 
     // window.location.reload();
   };
-
+  if (isLoading) return <Typography>Идет загрузка</Typography>;
   return (
     <Container
       sx={{
@@ -66,9 +68,7 @@ export const SignUpPage = () => {
         alignItems="center"
       >
         <Grid item xs={12}>
-
-            <PhotoUploader setFormData={setFormData} formData={formData} />
-
+          <PhotoUploader setFormData={setFormData} formData={formData} />
         </Grid>
         <Grid item xs={4}>
           <Stack>
